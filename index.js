@@ -10,6 +10,9 @@ app.use(express.static('views'))
 app.set('view engine', 'ejs')
 
 
+
+// get '/' used for rendering Main Page
+// post '/' used for initiating OTP to user
 app.route('/').get((req, res) => {
     res.render('index', { redirect: false })
 }).post(async (req, res) => {
@@ -28,8 +31,6 @@ app.route('/').get((req, res) => {
             res.render('enterOTP', jsObject)
         }
         else if (response.status === 400) {
-            /* res.write('<script>alert("OTP was already Sent, Try after 3mins")</script>')
-            res.end('<a href="/">Go Back</a>') */
             res.render('index', { redirect: true })
         }
         else {
@@ -41,11 +42,13 @@ app.route('/').get((req, res) => {
     }
 })
 
-
+// post '/certificate' used to accept OTP and txnId and to send back certificate in pdf format
 
 app.post('/certificate', async (req, res) => {
     const txnId = req.body.txnId
-    const hashedOTP = crypto.createHash('sha256').update(req.body.otp).digest('hex')
+
+    // hashing of OTP as required as per schema
+    const hashedOTP = crypto.createHash('sha256').update(req.body.otp).digest('hex')   
     try {
 
         var response = await fetch('https://cdn-api.co-vin.in/api/v2/auth/public/confirmOTP', {
@@ -58,22 +61,24 @@ app.post('/certificate', async (req, res) => {
                 txnId: txnId
             })
         })
-        if (response.status === 200) {
+
+        if (response.status === 200) {  //  if token generated successfully(user authenticated)
 
             var js = await response.json()
             let options = {
                 method: 'GET',
                 headers: {
-                    "Authorization": `Bearer ${js.token}`
+                    "Authorization": `Bearer ${js.token}`   //  Token received in response after confirming OTP
                 }
             };
 
+            //  sending token to fetch certificate
             var result = await fetch(`https://cdn-api.co-vin.in/api/v2/registration/certificate/public/download?beneficiary_reference_id=${req.body.beneficiary_Id}`, options)
 
-            var content = await result.arrayBuffer()
+            var content = await result.arrayBuffer()    //  accepting binary content in arrayBuffer form
 
-            res.type('application/pdf')
-            res.send(Buffer.from(content))
+            res.type('application/pdf')     //  setting 'content-type' header
+            res.send(Buffer.from(content))  // sending pdf content to browser
         }
         else {
             res.render('handleError', { error: response })
@@ -85,6 +90,4 @@ app.post('/certificate', async (req, res) => {
 
 })
 
-app.listen(80, () => {
-    console.log('Started');
-})
+app.listen(80 || process.env.PORT)

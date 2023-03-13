@@ -7,19 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error</title>
     <link rel="stylesheet" href="./styles.css">
+    <style>
+        #btn:hover {
+            background-color: rgb(124, 34, 34) !important;
+        }
+
+        #btn:active {
+            background-color: rgba(158, 47, 47, 0.596) !important;
+        }
+    </style>
 </head>
 
 <body>
     <div class="box">
         <img style='width: 60px;' src="./imgs/error.png" alt="">
-        <div style="text-align: center;">
+        <div style="text-align: center; ">
 
             <p><b>Error Occured, Code: <%=error.status%></b>
             </p>
             <%if(error.status===400){%>
-                <p>Either entered <b>Wrong OTP</b><br> OR <br> No. <b>NOT Registered</b> on br <a href="cowin.gov.in">cowin.gov.in</a></p>
-                <%}%>
-                    <p>Please Try Again after 3 mins</p>
+                <div style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                    <p>Either entered Wrong OTP<br> OR <br> Ph No. NOT Registered on <br> <a target="_blank"
+                            href="https://cowin.gov.in">cowin.gov.in</a></p>
+                    <%}%>
+                        <p>Please Try Again after 3 mins</p>
+                </div>
         </div>
         <a id="btn" style="text-decoration: none; background-color: rgb(158, 47, 47);" href="/">Go Back</a>
     </div>
