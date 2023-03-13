@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+
+<body>
+    <div class="box">
+        <img style='width: 60px;' src="./imgs/error.png" alt="">
+        <div style="text-align: center;">
+
+            <p><b>Error Occured, Code: <%=error.status%></b>
+            </p>
+            <%if(error.status===400){%>
+                <p>Either entered <b>Wrong OTP</b><br> OR <br> No. <b>NOT Registered</b> on br <a href="cowin.gov.in">cowin.gov.in</a></p>
+                <%}%>
+                    <p>Please Try Again after 3 mins</p>
+        </div>
+        <a id="btn" style="text-decoration: none; background-color: rgb(158, 47, 47);" href="/">Go Back</a>
+    </div>
+</body>
+
+</html>
