@@ -108,4 +108,4 @@ app.get("/test", (req, res) => {
   res.send("Test completed");
 });
 
-app.listen(5001 || process.env.PORT);
+app.listen(3000);
